@@ -2,10 +2,10 @@
 
 <img src="./assets/Dreamix-Logo.jpeg" alt="Dreamix Logo" width="65%"/> 
 
-# Dreamix
+# Dreamix 🎬 🎮
 
-### An AI-Native Interactive Video Agent. 🎬
-### From Ideas to Interactive Stories. 🎮
+### An AI-Native Interactive Video Agent. 
+### From Ideas to Interactive Stories. 
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT">
@@ -84,7 +84,8 @@ Dreamix is built on a cohesive, modular architecture designed for scalability an
 
 1. **Clone or Download the Repository**
 ```bash
-cd dreamix
+git clone https://github.com/Yuan-ManX/Dreamix.git
+cd Dreamix
 ```
 
 2. **Set up Backend**
