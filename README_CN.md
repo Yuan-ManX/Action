@@ -1,9 +1,13 @@
 <div align="center">
 
+<img src="./assets/Dreamix-Logo.jpeg" alt="Dreamix Logo" width="65%"/> 
+
 # Dreamix
 
 ### AI原生互动视频Agent 🎬
 ### 从创意到互动故事 🎮
+
+#### [English](./README.md) | [中文文档](./README_CN.md)
 
 </div>
 
