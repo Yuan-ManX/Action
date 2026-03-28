@@ -43,9 +43,10 @@ export default function DashboardPage() {
   ])
 
   const quickActions = [
-    { label: 'Create New Project', icon: '➕', href: '/chat' },
-    { label: 'Browse Skills', icon: '🎨', href: '/skills' },
-    { label: 'View History', icon: '📜', href: '/history' }
+    { label: 'Open Editor', icon: '✂️', href: '/dashboard/editor' },
+    { label: 'Create New Project', icon: '➕', href: '/dashboard/chat' },
+    { label: 'Browse Skills', icon: '🎨', href: '/dashboard/skills' },
+    { label: 'View History', icon: '📜', href: '/dashboard/history' }
   ]
 
   return (
@@ -84,7 +85,7 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-slate-800">Recent Projects</h2>
-            <Link href="/history" className="text-purple-600 hover:text-purple-700 font-medium">
+            <Link href="/dashboard/history" className="text-purple-600 hover:text-purple-700 font-medium">
               View All →
             </Link>
           </div>
