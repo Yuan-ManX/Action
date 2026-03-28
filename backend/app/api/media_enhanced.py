@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.media_enhanced import (
+from app.media.media_enhanced import (
     get_speech_system,
     get_enhanced_media_library,
     get_rough_cut_generator,

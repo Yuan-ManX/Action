@@ -1,7 +1,7 @@
 import os
 from typing import Optional, List, Dict, Any
 from litellm import completion, acompletion
-from app.core.config import get_settings
+from app.config.config import get_settings
 
 settings = get_settings()
 

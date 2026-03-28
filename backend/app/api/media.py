@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.media import get_media_storage, MediaFile, VideoComposer
-from app.core.config import get_settings
+from app.media.media import get_media_storage, MediaFile, VideoComposer
+from app.config.config import get_settings
 import os
 
 router = APIRouter()

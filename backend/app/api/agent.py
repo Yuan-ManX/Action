@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.agent import get_agent, ConversationStore
-from app.core.tools import get_tool_registry
+from app.agent.agent import get_agent, ConversationStore
+from app.tools.tools import get_tool_registry
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.skill_system import (
+from app.skills.skill_system import (
     get_skill_system,
     Skill,
     WorkflowStep,

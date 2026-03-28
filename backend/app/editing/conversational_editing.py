@@ -5,7 +5,7 @@ from typing import Optional, List, Dict, Any, Union
 from enum import Enum
 
 try:
-    from app.core.llm import get_llm_service, LLMService
+    from app.llm.llm import get_llm_service, LLMService
     LLM_AVAILABLE = True
 except ImportError:
     LLM_AVAILABLE = False

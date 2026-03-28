@@ -162,7 +162,7 @@ _media_storage_instance: Optional[MediaStorage] = None
 
 def get_media_storage() -> MediaStorage:
     global _media_storage_instance
-    from app.core.config import get_settings
+    from app.config.config import get_settings
     if _media_storage_instance is None:
         settings = get_settings()
         _media_storage_instance = MediaStorage(settings.MEDIA_STORAGE_PATH)

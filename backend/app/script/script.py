@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from enum import Enum
-from app.core.llm import get_llm_service, LLMService
+from app.llm.llm import get_llm_service, LLMService
 
 
 class SceneType(Enum):

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.script import get_script_generator, Script, ContentStyle
+from app.script.script import get_script_generator, Script, ContentStyle
 
 router = APIRouter()
 

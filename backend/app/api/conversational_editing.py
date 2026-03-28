@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.conversational_editing import (
+from app.editing.conversational_editing import (
     get_conversational_editing_system,
     VideoTimeline,
     EditAction

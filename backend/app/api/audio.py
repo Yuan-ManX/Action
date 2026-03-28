@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.audio import (
+from app.audio.audio import (
     AudioSystem,
     MusicTrack,
     VoiceProfile,

@@ -1,8 +1,8 @@
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 import uuid
-from app.core.llm import get_llm_service, LLMService
-from app.core.tools import get_tool_registry, ToolRegistry, BaseTool
+from app.llm.llm import get_llm_service, LLMService
+from app.tools.tools import get_tool_registry, ToolRegistry, BaseTool
 import json
 from collections import deque
 

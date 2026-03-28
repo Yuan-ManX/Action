@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.core.media_search import (
+from app.media.media_search import (
     get_media_search_engine,
     MediaItem,
     MediaCollection,
