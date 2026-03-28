@@ -301,7 +301,16 @@ python test_speech_processing.py
 
 Dreamix根据 MIT 许可。有关详细信息，请参阅[LICENSE](LICENSE)文件。
 
----
+## ⭐ 星标历史
+
+如果您喜欢这个项目，请 ⭐ 给仓库加星。您的支持帮助我们成长！
+
+<p align="center">
+  <a href="https://star-history.com/#Yuan-ManX/Dreamix&Date">
+    <img src="https://api.star-history.com/svg?repos=Yuan-ManX/Dreamix&type=Date" />
+  </a>
+</p>
+
 
 <div align="center">
 
