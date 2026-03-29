@@ -236,7 +236,7 @@ class RoughCutGenerator:
         }
 
 
-class EnhancedMediaAsset:
+class AdvancedMediaAsset:
     def __init__(
         self,
         asset_id: Optional[str] = None,
@@ -275,13 +275,13 @@ class EnhancedMediaAsset:
         }
 
 
-class EnhancedMediaLibrary:
+class AdvancedMediaLibrary:
     def __init__(self):
-        self.assets: Dict[str, EnhancedMediaAsset] = {}
+        self.assets: Dict[str, AdvancedMediaAsset] = {}
         self.tags_index: Dict[str, List[str]] = {}
         self.type_index: Dict[MediaType, List[str]] = {}
 
-    def add_asset(self, asset: EnhancedMediaAsset) -> None:
+    def add_asset(self, asset: AdvancedMediaAsset) -> None:
         self.assets[asset.asset_id] = asset
         
         for tag in asset.tags:
@@ -295,7 +295,7 @@ class EnhancedMediaLibrary:
         if asset.asset_id not in self.type_index[asset.media_type]:
             self.type_index[asset.media_type].append(asset.asset_id)
 
-    def get_asset(self, asset_id: str) -> Optional[EnhancedMediaAsset]:
+    def get_asset(self, asset_id: str) -> Optional[AdvancedMediaAsset]:
         return self.assets.get(asset_id)
 
     def search_assets(
@@ -305,7 +305,7 @@ class EnhancedMediaLibrary:
         tags: Optional[List[str]] = None,
         sentiment: Optional[str] = None,
         limit: int = 50
-    ) -> List[EnhancedMediaAsset]:
+    ) -> List[AdvancedMediaAsset]:
         results = list(self.assets.values())
         
         if media_type:
@@ -327,12 +327,12 @@ class EnhancedMediaLibrary:
         
         return results[:limit]
 
-    def get_all_assets(self) -> List[EnhancedMediaAsset]:
+    def get_all_assets(self) -> List[AdvancedMediaAsset]:
         return list(self.assets.values())
 
 
 _speech_system: Optional[SpeechProcessingSystem] = None
-_media_library: Optional[EnhancedMediaLibrary] = None
+_media_library: Optional[AdvancedMediaLibrary] = None
 _rough_cut_generator: Optional[RoughCutGenerator] = None
 
 
@@ -343,10 +343,10 @@ def get_speech_system() -> SpeechProcessingSystem:
     return _speech_system
 
 
-def get_enhanced_media_library() -> EnhancedMediaLibrary:
+def get_advanced_media_library() -> AdvancedMediaLibrary:
     global _media_library
     if _media_library is None:
-        _media_library = EnhancedMediaLibrary()
+        _media_library = AdvancedMediaLibrary()
     return _media_library
 
 
