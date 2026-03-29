@@ -8,7 +8,7 @@ from app.api.media_search import router as media_search_router
 from app.api.audio import router as audio_router
 from app.api.conversational_editing import router as conversational_editing_router
 from app.api.skill import router as skill_router
-from app.api.media_enhanced import router as media_enhanced_router
+from app.api.media_advanced import router as media_advanced_router
 from app.api.timeline import router as timeline_router
 
 api_router = APIRouter(prefix="/api/v1")
@@ -22,5 +22,5 @@ api_router.include_router(media_search_router, prefix="/media-search", tags=["me
 api_router.include_router(audio_router, prefix="/audio", tags=["audio"])
 api_router.include_router(conversational_editing_router, prefix="/editing", tags=["editing"])
 api_router.include_router(skill_router, prefix="/skill", tags=["skill"])
-api_router.include_router(media_enhanced_router, prefix="/media-enhanced", tags=["media-enhanced"])
+api_router.include_router(media_advanced_router, prefix="/media-advanced", tags=["media-advanced"])
 api_router.include_router(timeline_router, prefix="/timeline", tags=["timeline"])
