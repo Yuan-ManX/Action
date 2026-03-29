@@ -1,14 +1,14 @@
-from app.media.media_enhanced import (
+from app.media.media_advanced import (
     MediaType,
     MediaQuality,
     ASRResult,
     SpeechProcessingSystem,
     SpeechCleaner,
     RoughCutGenerator,
-    EnhancedMediaAsset,
-    EnhancedMediaLibrary,
+    AdvancedMediaAsset,
+    AdvancedMediaLibrary,
     get_speech_system,
-    get_enhanced_media_library,
+    get_advanced_media_library,
     get_rough_cut_generator
 )
 
@@ -19,9 +19,9 @@ __all__ = [
     "SpeechProcessingSystem",
     "SpeechCleaner",
     "RoughCutGenerator",
-    "EnhancedMediaAsset",
-    "EnhancedMediaLibrary",
+    "AdvancedMediaAsset",
+    "AdvancedMediaLibrary",
     "get_speech_system",
-    "get_enhanced_media_library",
+    "get_advanced_media_library",
     "get_rough_cut_generator"
 ]
