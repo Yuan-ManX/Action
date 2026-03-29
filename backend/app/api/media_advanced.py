@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from app.media.media_enhanced import (
+from app.media.media_advanced import (
     get_speech_system,
-    get_enhanced_media_library,
+    get_advanced_media_library,
     get_rough_cut_generator,
-    EnhancedMediaAsset,
+    AdvancedMediaAsset,
     MediaType,
     MediaQuality
 )
@@ -83,12 +83,12 @@ async def generate_rough_cut(request: RoughCutRequest):
 @router.post("/assets")
 async def create_media_asset(request: MediaAssetCreateRequest):
     try:
-        library = get_enhanced_media_library()
+        library = get_advanced_media_library()
         
         media_type_enum = MediaType(request.media_type)
         quality_enum = MediaQuality(request.quality)
         
-        asset = EnhancedMediaAsset(
+        asset = AdvancedMediaAsset(
             file_path=request.file_path,
             media_type=media_type_enum,
             tags=request.tags,
@@ -104,7 +104,7 @@ async def create_media_asset(request: MediaAssetCreateRequest):
 @router.get("/assets/{asset_id}")
 async def get_media_asset(asset_id: str):
     try:
-        library = get_enhanced_media_library()
+        library = get_advanced_media_library()
         asset = library.get_asset(asset_id)
         if not asset:
             raise HTTPException(status_code=404, detail="Asset not found")
@@ -118,7 +118,7 @@ async def get_media_asset(asset_id: str):
 @router.post("/assets/search")
 async def search_media_assets(request: MediaSearchRequest):
     try:
-        library = get_enhanced_media_library()
+        library = get_advanced_media_library()
         
         media_type = MediaType(request.media_type) if request.media_type else None
         
@@ -138,7 +138,7 @@ async def search_media_assets(request: MediaSearchRequest):
 @router.get("/assets")
 async def list_all_assets():
     try:
-        library = get_enhanced_media_library()
+        library = get_advanced_media_library()
         assets = library.get_all_assets()
         return [asset.to_dict() for asset in assets]
     except Exception as e:
