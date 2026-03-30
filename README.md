@@ -2,7 +2,7 @@
 
 <img src="./assets/Dreamix-Logo.png" alt="Dreamix Logo" width="40%"/> 
 
-# Dreamix 🎬 🎮
+# Action! 🎬 🎮
 
 ### An AI-Native Interactive Video Agent. 
 ### From Ideas to Interactive Stories. 
