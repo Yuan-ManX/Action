@@ -25,7 +25,7 @@
 
 ## 🌟 What is Dreamix?
 
-Dreamix is an AI-native interactive video agent platform that transforms ideas into compelling video stories through natural language conversations. By combining a powerful AI agent infrastructure with advanced video creation capabilities, Dreamix democratizes high-quality video production, making it accessible to everyone from beginners to professionals.
+Action! is an AI-native interactive video agent platform that transforms ideas into compelling video stories through natural language conversations. By combining a powerful AI agent infrastructure with advanced video creation capabilities, Dreamix democratizes high-quality video production, making it accessible to everyone from beginners to professionals.
 
 Dreamix features an intelligent generalist AI worker that handles research, data analysis, media processing, file management, and complex workflows – showcasing what's possible when building with Dreamix's advanced capabilities.
 
@@ -142,8 +142,8 @@ Dreamix is built on a cohesive, modular architecture designed for scalability an
 
 1. **Clone or Download the Repository**
 ```bash
-git clone https://github.com/Yuan-ManX/Dreamix.git
-cd Dreamix
+git clone https://github.com/Yuan-ManX/Action.git
+cd Action
 ```
 
 2. **Set up Backend**
@@ -307,8 +307,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you like this project, please ⭐ star the repo. Your support helps us grow!
 
 <p align="center">
-  <a href="https://star-history.com/#Yuan-ManX/Dreamix&Date">
-    <img src="https://api.star-history.com/svg?repos=Yuan-ManX/Dreamix&type=Date" />
+  <a href="https://star-history.com/#Yuan-ManX/Action&Date">
+    <img src="https://api.star-history.com/svg?repos=Yuan-ManX/Action&type=Date" />
   </a>
 </p>
 
