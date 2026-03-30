@@ -44,7 +44,7 @@ Whether you're a content creator, marketer, educator, or storyteller, Dreamix em
 - **Track Operations**: Add, remove, and manage multiple video, audio, and text tracks
 - **History System**: Comprehensive undo/redo functionality for all editing operations
 
-### 🎨 Enhanced Video Preview
+### 🎨 Video Preview
 - **Real-Time Preview**: Instant visual feedback of your edits
 - **Frame Navigation**: Step through video frame by frame for precise editing
 - **Waveform Visualization**: Audio waveform display for perfect timing alignment
