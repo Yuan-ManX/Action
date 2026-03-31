@@ -54,7 +54,7 @@ export default function DashboardPage() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome back!</h1>
-          <p className="text-slate-600">Continue creating amazing videos with Dreamix</p>
+          <p className="text-slate-600">Continue creating amazing videos with Action</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
