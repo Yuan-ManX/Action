@@ -1,6 +1,9 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect } from 'react'
+
+const STORAGE_KEY = 'action_projects'
+const CURRENT_PROJECT_KEY = 'action_current_project_id'
 
 export interface TimelineClip {
   id: string
@@ -90,11 +93,37 @@ const ProjectContext = createContext<(ProjectState & ProjectActions) | undefined
 
 const MAX_HISTORY_SIZE = 50
 
+const loadFromStorage = (): { projects: VideoProject[], currentProjectId: string | null } => {
+  if (typeof window === 'undefined') return { projects: [], currentProjectId: null }
+  try {
+    const projectsData = localStorage.getItem(STORAGE_KEY)
+    const currentId = localStorage.getItem(CURRENT_PROJECT_KEY)
+    return {
+      projects: projectsData ? JSON.parse(projectsData) : [],
+      currentProjectId: currentId
+    }
+  } catch {
+    return { projects: [], currentProjectId: null }
+  }
+}
+
+const saveToStorage = (projects: VideoProject[], currentProjectId: string | null) => {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects))
+    if (currentProjectId) {
+      localStorage.setItem(CURRENT_PROJECT_KEY, currentProjectId)
+    }
+  } catch {
+    console.error('Failed to save to localStorage')
+  }
+}
+
 export function ProjectProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ProjectState>({
     currentProject: null,
     projects: [],
-    isLoading: false,
+    isLoading: true,
     currentTime: 0,
     zoom: 1,
     selectedClipId: null,
@@ -106,6 +135,36 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     volume: 80,
     isMuted: false
   })
+
+  useEffect(() => {
+    const { projects, currentProjectId } = loadFromStorage()
+    const currentProject = currentProjectId 
+      ? projects.find(p => p.projectId === currentProjectId) || null
+      : null
+    
+    setState(prev => ({
+      ...prev,
+      projects,
+      currentProject,
+      isLoading: false
+    }))
+  }, [])
+
+  useEffect(() => {
+    if (state.isLoading) return
+    
+    let updatedProjects = [...state.projects]
+    if (state.currentProject) {
+      const existingIndex = updatedProjects.findIndex(p => p.projectId === state.currentProject.projectId)
+      if (existingIndex >= 0) {
+        updatedProjects[existingIndex] = state.currentProject
+      } else {
+        updatedProjects.push(state.currentProject)
+      }
+    }
+    
+    saveToStorage(updatedProjects, state.currentProject?.projectId || null)
+  }, [state.currentProject, state.projects, state.isLoading])
 
   const clips = useMemo(() => state.currentProject?.clips || [], [state.currentProject?.clips])
   const tracks = useMemo(() => state.currentProject?.tracks || [], [state.currentProject?.tracks])
