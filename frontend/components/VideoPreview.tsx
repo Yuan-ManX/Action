@@ -477,7 +477,7 @@ export default function VideoPreview({
               )}
               title="Toggle Frame Preview"
             >
-              �️
+              📷
             </button>
             
             <select
