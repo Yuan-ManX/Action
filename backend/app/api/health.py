@@ -13,5 +13,5 @@ class HealthResponse(BaseModel):
 async def health_check():
     return HealthResponse(
         status="ok",
-        message="Dreamix API is running"
+        message="Action API is running"
     )
