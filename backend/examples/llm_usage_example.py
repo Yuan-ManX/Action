@@ -4,7 +4,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.core.llm import get_llm_service
+from app.llm.llm import get_llm_service
 
 
 async def example_basic_usage():
@@ -94,7 +94,7 @@ async def example_multi_turn():
 
 
 if __name__ == "__main__":
-    print("Dreamix LLM 服务使用示例")
+    print("Action LLM 服务使用示例")
     print("=" * 50)
     
     asyncio.run(example_health_check())
