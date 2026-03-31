@@ -24,7 +24,7 @@ export default function SkillsPage() {
       difficulty: 'beginner',
       tags: ['intro', 'title', 'quick'],
       isBuiltin: true,
-      author: 'Dreamix',
+      author: 'Action',
       steps: 2
     },
     {
@@ -35,7 +35,7 @@ export default function SkillsPage() {
       difficulty: 'intermediate',
       tags: ['cinematic', 'color', 'movie'],
       isBuiltin: true,
-      author: 'Dreamix',
+      author: 'Action',
       steps: 2
     },
     {
@@ -46,7 +46,7 @@ export default function SkillsPage() {
       difficulty: 'beginner',
       tags: ['vlog', 'casual', 'social'],
       isBuiltin: true,
-      author: 'Dreamix',
+      author: 'Action',
       steps: 3
     }
   ])
