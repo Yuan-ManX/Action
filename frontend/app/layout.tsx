@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Dreamix - AI Video Creator',
+  title: 'Action - AI Video Creator',
   description: 'Create amazing videos with AI',
 }
 
