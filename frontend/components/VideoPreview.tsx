@@ -1,6 +1,12 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+function cn(...inputs: any[]) {
+  return twMerge(clsx(inputs))
+}
 
 export interface VideoClip {
   id: string
@@ -38,7 +44,7 @@ export default function VideoPreview({
   onTimeChange,
   onPlayPause,
   isPlaying: controlledPlaying,
-  showWaveform = false,
+  showWaveform = true,
   aspectRatio = '16:9',
   volume: controlledVolume,
   onVolumeChange,
@@ -57,6 +63,7 @@ export default function VideoPreview({
   const [hoverTime, setHoverTime] = useState<number | null>(null)
   const [isLooping, setIsLooping] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isMutedState, setIsMutedState] = useState(false)
   
   const videoRef = useRef<HTMLDivElement>(null)
   const seekBarRef = useRef<HTMLDivElement>(null)
@@ -88,9 +95,11 @@ export default function VideoPreview({
 
   const generateWaveform = useCallback((): WaveformData => {
     const peaks: number[] = []
-    const sampleCount = 200
+    const sampleCount = 250
     for (let i = 0; i < sampleCount; i++) {
-      peaks.push(Math.random() * 0.6 + 0.2)
+      const base = 0.2 + Math.sin(i * 0.1) * 0.3
+      const variation = Math.random() * 0.4
+      peaks.push(Math.min(0.9, base + variation))
     }
     return { peaks, duration: totalDuration }
   }, [totalDuration])
@@ -236,6 +245,7 @@ export default function VideoPreview({
 
   const handleMuteChange = useCallback(() => {
     const newMuted = !isMuted
+    setIsMutedState(newMuted)
     if (onMuteChange) {
       onMuteChange(newMuted)
     } else {
@@ -287,57 +297,69 @@ export default function VideoPreview({
   return (
     <div 
       ref={previewContainerRef}
-      className="flex flex-col h-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700"
+      className="flex flex-col h-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-2xl"
     >
-      <div className="flex-1 relative flex items-center justify-center bg-black">
+      <div className="flex-1 relative flex items-center justify-center bg-gradient-to-br from-slate-950 to-black">
         <div 
           ref={videoRef}
-          className={`relative ${getAspectRatioClass()} w-full max-w-5xl bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg overflow-hidden shadow-2xl`}
+          className={cn(
+            "relative w-full max-w-5xl bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden shadow-2xl",
+            getAspectRatioClass()
+          )}
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             {currentClip ? (
-              <div className="text-center">
-                <div className="text-8xl mb-4">{currentClip.thumbnail || getClipIcon(currentClip.type)}</div>
-                <p className="text-white text-xl font-semibold">{currentClip.title}</p>
-                <p className="text-slate-400 text-sm mt-2">{currentClip.type.toUpperCase()}</p>
-                <p className="text-slate-500 text-xs mt-1">{formatTime(currentTime)} / {formatTime(currentClip.duration)}</p>
+              <div className="text-center animate-in fade-in zoom-in duration-300">
+                <div className="text-9xl mb-6">{currentClip.thumbnail || getClipIcon(currentClip.type)}</div>
+                <p className="text-white text-2xl font-bold mb-2">{currentClip.title}</p>
+                <p className="text-slate-400 text-sm uppercase tracking-wider">{currentClip.type.toUpperCase()}</p>
+                <div className="mt-4 px-4 py-2 bg-slate-800/80 rounded-full">
+                  <p className="text-slate-300 text-xs font-mono">{formatTime(currentTime)} / {formatTime(totalDuration)}</p>
+                </div>
               </div>
             ) : (
               <div className="text-center">
-                <div className="text-8xl mb-4">🎬</div>
-                <p className="text-slate-400 text-lg">Video Preview</p>
-                <p className="text-sm text-slate-500 mt-2">Add clips to see your video</p>
+                <div className="text-9xl mb-6 animate-pulse">🎬</div>
+                <p className="text-slate-300 text-xl font-medium">Video Preview</p>
+                <p className="text-sm text-slate-500 mt-3">Add clips to start your project</p>
               </div>
             )}
           </div>
 
           <button
             onClick={togglePlayPause}
-            className="absolute z-10 w-24 h-24 rounded-full bg-purple-600/90 flex items-center justify-center text-white text-5xl hover:bg-purple-500 transition-all hover:scale-105 shadow-xl"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-28 h-28 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center text-white text-6xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-purple-500/30 active:scale-95"
           >
             {isPlaying ? '⏸' : '▶'}
           </button>
 
           {showFramePreview && hoverTime !== null && (
             <div 
-              className="absolute bottom-24 w-40 h-24 bg-slate-800 rounded-lg border border-slate-600 flex flex-col items-center justify-center shadow-xl z-20"
+              className="absolute bottom-28 w-44 h-28 bg-slate-800/95 backdrop-blur rounded-xl border border-slate-600 flex flex-col items-center justify-center shadow-2xl z-20"
               style={{ left: `${(hoverTime / totalDuration) * 100}%`, transform: 'translateX(-50%)' }}
             >
-              <div className="text-3xl">🎞️</div>
-              <span className="absolute bottom-2 text-xs text-slate-300 font-mono">{formatTime(hoverTime)}</span>
+              <div className="text-4xl mb-1">🎞️</div>
+              <span className="absolute bottom-3 text-xs text-slate-300 font-mono bg-slate-900 px-2 py-1 rounded">{formatTime(hoverTime)}</span>
             </div>
           )}
 
           <div className="absolute top-4 right-4 flex gap-2">
             <button 
               onClick={() => setIsLooping(!isLooping)}
-              className={`p-2 rounded-lg transition-all ${isLooping ? 'bg-purple-600 text-white' : 'bg-black/50 text-slate-300 hover:bg-black/70'}`}
+              className={cn(
+                "p-3 rounded-xl transition-all duration-300",
+                isLooping 
+                  ? 'bg-gradient-to-br from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/20' 
+                  : 'bg-black/40 backdrop-blur text-slate-300 hover:bg-black/60'
+              )}
+              title={isLooping ? "Disable Loop" : "Enable Loop"}
             >
               🔁
             </button>
             <button 
               onClick={toggleFullscreen}
-              className="p-2 rounded-lg bg-black/50 text-slate-300 hover:bg-black/70 transition-all"
+              className="p-3 rounded-xl bg-black/40 backdrop-blur text-slate-300 hover:bg-black/60 transition-all duration-300"
+              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
             >
               {isFullscreen ? '⛶' : '⛶'}
             </button>
@@ -345,113 +367,123 @@ export default function VideoPreview({
         </div>
       </div>
 
-      <div className="p-5 bg-slate-800 border-t border-slate-700">
+      <div className="p-6 bg-gradient-to-t from-slate-800 to-slate-800/50 border-t border-slate-700">
         <div 
           ref={seekBarRef}
-          className="relative h-10 cursor-pointer group"
+          className="relative h-14 cursor-pointer group mb-4"
           onClick={handleSeek}
           onMouseMove={handleSeekHover}
           onMouseLeave={() => setHoverTime(null)}
         >
           {waveform && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex items-center gap-px h-6">
-                {waveform.peaks.map((peak, i) => (
-                  <div
-                    key={i}
-                    className={`w-0.5 rounded-full transition-all ${
-                      i / waveform.peaks.length * totalDuration <= currentTime
-                        ? 'bg-green-500'
-                        : 'bg-green-500/30'
-                    }`}
-                    style={{ height: `${peak * 100}%` }}
-                  />
-                ))}
+            <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-lg">
+              <div className="flex items-center gap-[2px] h-10 w-full px-1">
+                {waveform.peaks.map((peak, i) => {
+                  const isActive = i / waveform.peaks.length * totalDuration <= currentTime
+                  return (
+                    <div
+                      key={i}
+                      className={cn(
+                        "flex-1 rounded-full transition-all duration-150",
+                        isActive 
+                          ? 'bg-gradient-to-t from-purple-600 to-purple-400' 
+                          : 'bg-gradient-to-t from-slate-600 to-slate-500',
+                        hoverTime !== null && i / waveform.peaks.length * totalDuration <= hoverTime && !isActive
+                          ? 'bg-gradient-to-t from-purple-500/50 to-purple-400/50'
+                          : ''
+                      )}
+                      style={{ height: `${peak * 100}%` }}
+                    />
+                  )
+                })}
               </div>
             </div>
           )}
 
-          <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-700/50 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-purple-600 to-purple-500 transition-all"
+              className="h-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-100"
               style={{ width: `${(currentTime / totalDuration) * 100}%` }}
             />
           </div>
 
           {hoverTime !== null && (
             <div
-              className="absolute bottom-4 h-1.5 bg-white/40 rounded-full"
+              className="absolute bottom-0 h-1.5 bg-white/30 rounded-full transition-all"
               style={{ left: 0, width: `${(hoverTime / totalDuration) * 100}%` }}
             />
           )}
 
           <div
-            className="absolute bottom-4 w-4 h-4 bg-white rounded-full shadow-lg transform -translate-x-1/2 -translate-y-[6px] transition-all"
+            className="absolute bottom-0 w-5 h-5 bg-white rounded-full shadow-xl transform -translate-x-1/2 -translate-y-[6px] transition-all group-hover:scale-125"
             style={{ left: `${(currentTime / totalDuration) * 100}%` }}
           />
         </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center gap-3">
-            <span className="text-white text-sm font-mono min-w-[90px] bg-slate-900 px-3 py-1 rounded border border-slate-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-white text-sm font-mono min-w-[100px] bg-slate-900/80 px-4 py-2 rounded-lg border border-slate-700 text-center">
               {formatTime(currentTime)}
             </span>
             <div className="flex items-center gap-1">
               <button 
                 onClick={goToStart}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                className="p-2.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                title="Go to Start"
               >
                 ⏮️
               </button>
               <button 
-                onClick={() => stepBackward(10)}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                onClick={() => stepBackward(5)}
+                className="p-2.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                title="Rewind 5s"
               >
                 ⏪
               </button>
               <button
                 onClick={togglePlayPause}
-                className="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center hover:bg-purple-500 transition-colors shadow-lg hover:shadow-purple-500/30"
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 text-white flex items-center justify-center hover:from-purple-500 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-purple-500/30 hover:scale-105 active:scale-95"
               >
                 {isPlaying ? '⏸' : '▶'}
               </button>
               <button 
-                onClick={() => stepForward(10)}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                onClick={() => stepForward(5)}
+                className="p-2.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                title="Fast Forward 5s"
               >
                 ⏩
               </button>
               <button 
                 onClick={goToEnd}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                className="p-2.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                title="Go to End"
               >
                 ⏭️
               </button>
             </div>
-            <span className="text-slate-400 text-sm font-mono min-w-[90px] bg-slate-900 px-3 py-1 rounded border border-slate-700">
+            <span className="text-slate-400 text-sm font-mono min-w-[100px] bg-slate-900/80 px-4 py-2 rounded-lg border border-slate-700 text-center">
               {formatTime(totalDuration)}
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button 
               onClick={() => setShowFramePreview(!showFramePreview)}
-              className={`p-2 rounded-lg transition-all ${showFramePreview ? 'text-purple-400 bg-purple-900/30' : 'text-slate-400 hover:text-white hover:bg-slate-700'}`}
+              className={cn(
+                "p-2.5 rounded-lg transition-all duration-200",
+                showFramePreview 
+                  ? 'text-purple-400 bg-purple-900/30' 
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              )}
+              title="Toggle Frame Preview"
             >
-              🖼️
+              �️
             </button>
             
-            <button 
-              onClick={() => {}}
-              className={`p-2 rounded-lg transition-all ${showWaveform ? 'text-purple-400 bg-purple-900/30' : 'text-slate-400 hover:text-white hover:bg-slate-700'}`}
-            >
-              📊
-            </button>
-
             <select
               value={playbackRate}
               onChange={(e) => handlePlaybackRateChange(parseFloat(e.target.value))}
-              className="bg-slate-700 text-white text-sm px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-purple-500"
+              className="bg-slate-700 text-white text-sm px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-purple-500 transition-all"
             >
               <option value={0.25}>0.25x</option>
               <option value={0.5}>0.5x</option>
@@ -465,7 +497,8 @@ export default function VideoPreview({
             <div className="flex items-center gap-2">
               <button 
                 onClick={handleMuteChange}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                className="p-2.5 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+                title={isMuted ? "Unmute" : "Mute"}
               >
                 {isMuted || volume === 0 ? '🔇' : volume < 50 ? '🔉' : '🔊'}
               </button>
@@ -475,7 +508,7 @@ export default function VideoPreview({
                 max="100"
                 value={isMuted ? 0 : volume}
                 onChange={(e) => handleVolumeChange(Number(e.target.value))}
-                className="w-28 accent-purple-500"
+                className="w-32 accent-purple-500 h-1.5 bg-slate-700 rounded-full appearance-none cursor-pointer"
               />
             </div>
           </div>
@@ -483,9 +516,12 @@ export default function VideoPreview({
       </div>
 
       {showClipList && clips.length > 0 && (
-        <div className="p-4 bg-slate-900 border-t border-slate-700">
-          <p className="text-sm text-slate-400 mb-3 font-medium">Clip Timeline ({clips.length} clips)</p>
-          <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="p-4 bg-slate-900/50 border-t border-slate-700">
+          <p className="text-sm text-slate-400 mb-3 font-medium flex items-center gap-2">
+            <span>📋</span>
+            Clip Timeline ({clips.length} clips)
+          </p>
+          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
             {clips.map((clip, index) => {
               let accumulatedTime = 0
               for (let i = 0; i < index; i++) {
@@ -500,15 +536,16 @@ export default function VideoPreview({
                     if (onTimeChange) onTimeChange(accumulatedTime)
                     else setInternalTime(accumulatedTime)
                   }}
-                  className={`flex-shrink-0 p-3 rounded-xl cursor-pointer transition-all border-2 ${
+                  className={cn(
+                    "flex-shrink-0 p-4 rounded-2xl cursor-pointer transition-all duration-200 border-2",
                     isActive 
-                      ? 'bg-purple-600 border-purple-400 shadow-lg shadow-purple-500/20' 
-                      : 'bg-slate-800 border-transparent hover:border-slate-600 hover:bg-slate-750'
-                  }`}
+                      ? 'bg-gradient-to-br from-purple-600 to-purple-700 border-purple-400 shadow-xl shadow-purple-500/25 scale-[1.02]' 
+                      : 'bg-slate-800 border-transparent hover:border-slate-600 hover:bg-slate-750 hover:scale-[1.02]'
+                  )}
                 >
-                  <div className="text-3xl mb-2">{clip.thumbnail || getClipIcon(clip.type)}</div>
-                  <p className="text-xs text-white truncate w-24 font-medium">{clip.title}</p>
-                  <p className="text-xs text-slate-400 mt-1 font-mono">{formatTime(clip.duration)}</p>
+                  <div className="text-4xl mb-3">{clip.thumbnail || getClipIcon(clip.type)}</div>
+                  <p className="text-xs text-white truncate w-28 font-semibold">{clip.title}</p>
+                  <p className="text-xs text-slate-300 mt-2 font-mono bg-black/20 px-2 py-1 rounded">{formatTime(clip.duration)}</p>
                 </div>
               )
             })}
