@@ -14,7 +14,7 @@ export default function ChatInterface() {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hi! I\'m Dreamix, your AI video creation assistant. How can I help you create amazing videos today?',
+      content: 'Hi! I\'m Action, your AI video creation assistant. How can I help you create amazing videos today?',
       timestamp: new Date()
     }
   ])
