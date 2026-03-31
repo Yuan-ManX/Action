@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useCallback, ReactNode, useMemo } 
 
 export interface TimelineClip {
   id: string
-  type: 'video' | 'audio' | 'image' | 'text'
+  type: 'video' | 'audio' | 'image' | 'text' | 'effect'
   title: string
   startTime: number
   duration: number
@@ -37,6 +37,7 @@ export interface VideoProject {
   transitions: any[]
   createdAt: string
   updatedAt: string
+  totalDuration?: number
 }
 
 interface ProjectState {
@@ -51,6 +52,8 @@ interface ProjectState {
   isPlaying: boolean
   playbackRate: number
   aspectRatio: '16:9' | '9:16' | '1:1' | '4:3'
+  volume: number
+  isMuted: boolean
 }
 
 interface ProjectActions {
@@ -63,6 +66,8 @@ interface ProjectActions {
   setIsPlaying: (playing: boolean) => void
   setPlaybackRate: (rate: number) => void
   setAspectRatio: (ratio: '16:9' | '9:16' | '1:1' | '4:3') => void
+  setVolume: (volume: number) => void
+  setIsMuted: (muted: boolean) => void
   addClip: (clip: TimelineClip) => void
   updateClip: (clipId: string, updates: Partial<TimelineClip>) => void
   deleteClip: (clipId: string) => void
@@ -78,9 +83,12 @@ interface ProjectActions {
   clips: TimelineClip[]
   tracks: TimelineTrack[]
   totalDuration: number
+  createNewProject: (name?: string, description?: string) => VideoProject
 }
 
 const ProjectContext = createContext<(ProjectState & ProjectActions) | undefined>(undefined)
+
+const MAX_HISTORY_SIZE = 50
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ProjectState>({
@@ -94,7 +102,9 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     historyIndex: -1,
     isPlaying: false,
     playbackRate: 1,
-    aspectRatio: '16:9'
+    aspectRatio: '16:9',
+    volume: 80,
+    isMuted: false
   })
 
   const clips = useMemo(() => state.currentProject?.clips || [], [state.currentProject?.clips])
@@ -109,7 +119,13 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     
     setState(prev => {
       const newHistory = prev.history.slice(0, prev.historyIndex + 1)
-      newHistory.push(JSON.parse(JSON.stringify(prev.currentProject)))
+      const projectToSave = JSON.parse(JSON.stringify(prev.currentProject))
+      newHistory.push(projectToSave)
+      
+      if (newHistory.length > MAX_HISTORY_SIZE) {
+        newHistory.shift()
+      }
+      
       return {
         ...prev,
         history: newHistory,
@@ -126,7 +142,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       const project = prev.history[newIndex]
       return {
         ...prev,
-        currentProject: project,
+        currentProject: project ? JSON.parse(JSON.stringify(project)) : null,
         historyIndex: newIndex
       }
     })
@@ -140,11 +156,36 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       const project = prev.history[newIndex]
       return {
         ...prev,
-        currentProject: project,
+        currentProject: project ? JSON.parse(JSON.stringify(project)) : null,
         historyIndex: newIndex
       }
     })
   }, [state.historyIndex, state.history.length])
+
+  const createNewProject = useCallback((name: string = 'Untitled Project', description: string = 'A new video project'): VideoProject => {
+    const defaultTracks: TimelineTrack[] = [
+      { id: 'video-1', type: 'video', name: 'Video Track 1', locked: false, muted: false, volume: 1 },
+      { id: 'audio-1', type: 'audio', name: 'Audio Track 1', locked: false, muted: false, volume: 1 },
+      { id: 'text-1', type: 'text', name: 'Text Track 1', locked: false, muted: false, volume: 1 }
+    ]
+    
+    const newProject: VideoProject = {
+      projectId: Date.now().toString(),
+      name,
+      description,
+      width: 1920,
+      height: 1080,
+      fps: 30,
+      tracks: defaultTracks,
+      clips: [],
+      transitions: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      totalDuration: 0
+    }
+    
+    return newProject
+  }, [])
 
   const addClip = useCallback((clip: TimelineClip) => {
     saveState()
@@ -300,6 +341,8 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     setIsPlaying: (playing) => setState(prev => ({ ...prev, isPlaying: playing })),
     setPlaybackRate: (rate) => setState(prev => ({ ...prev, playbackRate: rate })),
     setAspectRatio: (ratio) => setState(prev => ({ ...prev, aspectRatio: ratio })),
+    setVolume: (volume) => setState(prev => ({ ...prev, volume })),
+    setIsMuted: (muted) => setState(prev => ({ ...prev, isMuted: muted })),
     addClip,
     updateClip,
     deleteClip,
@@ -314,7 +357,8 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     canRedo: state.historyIndex < state.history.length - 1,
     clips,
     tracks,
-    totalDuration
+    totalDuration,
+    createNewProject
   }
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>
