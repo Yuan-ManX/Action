@@ -446,6 +446,85 @@ class TimelineManager:
         self.save_project(project)
         return track
 
+    def update_track(self, project_id: str, track_id: str, **kwargs) -> Optional[TimelineTrack]:
+        project = self.get_project(project_id)
+        if not project:
+            return None
+        
+        track = next((t for t in project.tracks if t.track_id == track_id), None)
+        if not track:
+            return None
+        
+        for key, value in kwargs.items():
+            if hasattr(track, key):
+                setattr(track, key, value)
+        
+        self.save_project(project)
+        return track
+
+    def delete_track(self, project_id: str, track_id: str) -> bool:
+        project = self.get_project(project_id)
+        if not project:
+            return False
+        
+        track_index = next((i for i, t in enumerate(project.tracks) if t.track_id == track_id), -1)
+        if track_index == -1:
+            return False
+        
+        project.tracks = [t for t in project.tracks if t.track_id != track_id]
+        project.clips = [c for c in project.clips if c.track_index != track_index]
+        
+        self.save_project(project)
+        return True
+
+    def duplicate_project(self, project_id: str, new_name: Optional[str] = None) -> Optional[VideoProject]:
+        project = self.get_project(project_id)
+        if not project:
+            return None
+        
+        import copy
+        new_project = copy.deepcopy(project)
+        new_project.project_id = str(uuid.uuid4())
+        new_project.name = new_name or f"{project.name} (Copy)"
+        new_project.created_at = datetime.now()
+        new_project.updated_at = datetime.now()
+        
+        self._save_project(new_project)
+        self._projects_cache[new_project.project_id] = new_project
+        return new_project
+
+    def merge_clips(self, project_id: str, clip_ids: List[str]) -> Optional[TimelineClip]:
+        project = self.get_project(project_id)
+        if not project or len(clip_ids) < 2:
+            return None
+        
+        clips_to_merge = sorted(
+            [c for c in project.clips if c.clip_id in clip_ids],
+            key=lambda c: c.start_time
+        )
+        
+        if len(clips_to_merge) < 2:
+            return None
+        
+        first_clip = clips_to_merge[0]
+        last_clip = clips_to_merge[-1]
+        
+        merged_clip = TimelineClip(
+            clip_type=first_clip.clip_type,
+            title=f"{first_clip.title} (Merged)",
+            media_path=first_clip.media_path,
+            start_time=first_clip.start_time,
+            duration=(last_clip.start_time + last_clip.duration) - first_clip.start_time,
+            track_index=first_clip.track_index,
+            properties={**first_clip.properties, "merged_clips": clip_ids}
+        )
+        
+        project.clips = [c for c in project.clips if c.clip_id not in clip_ids]
+        project.clips.append(merged_clip)
+        
+        self.save_project(project)
+        return merged_clip
+
 
 _timeline_manager_instance: Optional[TimelineManager] = None
 
