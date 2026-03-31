@@ -14,7 +14,7 @@ services:
     environment:
       - DEBUG=true
     networks:
-      - dreamix-network
+      - action-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -34,10 +34,10 @@ services:
     depends_on:
       - backend
     networks:
-      - dreamix-network
+      - action-network
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
 
 networks:
-  dreamix-network:
+  action-network:
     driver: bridge
