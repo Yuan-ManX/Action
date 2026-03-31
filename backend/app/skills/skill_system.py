@@ -257,7 +257,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.BEGINNER,
             tags=["intro", "title", "quick"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         quick_intro.add_step(WorkflowStep(
             step_type="add_title",
@@ -278,7 +278,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.INTERMEDIATE,
             tags=["cinematic", "color", "movie"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         cinematic_style.add_step(WorkflowStep(
             step_type="color_grading",
@@ -299,7 +299,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.BEGINNER,
             tags=["vlog", "casual", "social"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         vlog_style.add_step(WorkflowStep(
             step_type="add_intro",
@@ -325,7 +325,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.INTERMEDIATE,
             tags=["speech", "asr", "cleanup", "filler", "rough cut"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         speech_rough_cut.add_step(WorkflowStep(
             step_type="transcribe_audio",
@@ -351,7 +351,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.BEGINNER,
             tags=["product", "review", "demo", "marketing"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         product_review.add_step(WorkflowStep(
             step_type="add_intro",
@@ -387,7 +387,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.INTERMEDIATE,
             tags=["education", "tutorial", "learning", "explainer"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         educational_content.add_step(WorkflowStep(
             step_type="add_title",
@@ -418,7 +418,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.BEGINNER,
             tags=["social", "instagram", "tiktok", "youtube", "reels"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         social_media_optimized.add_step(WorkflowStep(
             step_type="optimize_aspect_ratio",
@@ -449,7 +449,7 @@ class SkillLibrary:
             difficulty=SkillDifficulty.ADVANCED,
             tags=["documentary", "serious", "informative", "news"],
             is_builtin=True,
-            author="Dreamix"
+            author="Action"
         )
         documentary_style.add_step(WorkflowStep(
             step_type="color_grading",
