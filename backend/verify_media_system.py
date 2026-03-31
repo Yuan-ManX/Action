@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Media System Verification - Verify code structure and basic functionality
 without requiring external dependencies
@@ -23,7 +22,7 @@ def verify_file_structure():
         "backend/examples/media_usage_example.py"
     ]
     
-    base_path = Path("/Users/yuanman/Desktop/Dreamix")
+    base_path = Path("/Users/yuanman/Desktop/Action")
     
     all_exist = True
     for file_path in required_files:
@@ -64,9 +63,9 @@ def verify_code_syntax():
     print("\n=== Verifying Code Syntax ===")
     
     files_to_check = [
-        "/Users/yuanman/Desktop/Dreamix/backend/app/core/media.py",
-        "/Users/yuanman/Desktop/Dreamix/backend/app/api/media.py",
-        "/Users/yuanman/Desktop/Dreamix/backend/examples/media_usage_example.py"
+        "/Users/yuanman/Desktop/Action/backend/app/media/media.py",
+        "/Users/yuanman/Desktop/Action/backend/app/api/media.py",
+        "/Users/yuanman/Desktop/Action/backend/examples/media_usage_example.py"
     ]
     
     all_valid = True
@@ -84,7 +83,7 @@ def verify_requirements():
     """Verify required dependencies are listed"""
     print("\n=== Verifying Requirements ===")
     
-    req_path = "/Users/yuanman/Desktop/Dreamix/backend/requirements.txt"
+    req_path = "/Users/yuanman/Desktop/Action/backend/requirements.txt"
     required_deps = ["moviepy", "Pillow", "ffmpeg-python", "aiofiles"]
     
     try:
@@ -109,7 +108,7 @@ def verify_api_routes():
     """Verify media routes are registered in v1.py"""
     print("\n=== Verifying API Routes ===")
     
-    v1_path = "/Users/yuanman/Desktop/Dreamix/backend/app/api/v1.py"
+    v1_path = "/Users/yuanman/Desktop/Action/backend/app/api/v1.py"
     try:
         with open(v1_path, 'r') as f:
             content = f.read()
@@ -137,7 +136,7 @@ def verify_config():
     """Verify config has media settings"""
     print("\n=== Verifying Configuration ===")
     
-    config_path = "/Users/yuanman/Desktop/Dreamix/backend/app/core/config.py"
+    config_path = "/Users/yuanman/Desktop/Action/backend/app/config/config.py"
     try:
         with open(config_path, 'r') as f:
             content = f.read()
@@ -160,7 +159,7 @@ def verify_config():
 
 def main():
     print("="*60)
-    print("Dreamix Media System - Verification")
+    print("Action Media System - Verification")
     print("="*60)
     
     results = []
