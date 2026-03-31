@@ -5,7 +5,7 @@ import os
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Dreamix API"
+    APP_NAME: str = "Action API"
     DEBUG: bool = True
     BACKEND_HOST: str = "0.0.0.0"
     BACKEND_PORT: int = 8000
