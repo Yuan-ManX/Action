@@ -100,6 +100,24 @@ export const timelineApi = {
   
   getPreview: (projectId: string) =>
     api.get<ProjectResponse>(`/timeline/projects/${projectId}/preview`),
+  
+  copyClip: (projectId: string, clipId: string, newStartTime?: number) =>
+    api.post<ProjectResponse>(`/timeline/projects/${projectId}/clips/${clipId}/copy`, { new_start_time: newStartTime }),
+  
+  mergeClips: (projectId: string, clipIds: string[]) =>
+    api.post<ProjectResponse>(`/timeline/projects/${projectId}/clips/merge`, { clip_ids: clipIds }),
+  
+  reorderClips: (projectId: string, clipOrder: string[]) =>
+    api.post<ProjectResponse>(`/timeline/projects/${projectId}/clips/reorder`, { clip_order: clipOrder }),
+  
+  getClipsByTrack: (projectId: string, trackIndex: number) =>
+    api.get<ProjectResponse>(`/timeline/projects/${projectId}/tracks/${trackIndex}/clips`),
+  
+  trimClip: (projectId: string, clipId: string, trimStart: number = 0, trimEnd: number = 0) =>
+    api.post<ProjectResponse>(`/timeline/projects/${projectId}/clips/${clipId}/trim`, { trim_start: trimStart, trim_end: trimEnd }),
+  
+  duplicateProject: (projectId: string, newName?: string) =>
+    api.post<ProjectResponse>(`/timeline/projects/${projectId}/duplicate`, { new_name: newName }),
 }
 
 export const healthApi = {
