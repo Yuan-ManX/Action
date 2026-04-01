@@ -75,6 +75,9 @@ interface ProjectActions {
   updateClip: (clipId: string, updates: Partial<TimelineClip>) => void
   deleteClip: (clipId: string) => void
   splitClip: (clipId: string, splitTime: number) => void
+  copyClip: (clipId: string, newStartTime?: number) => void
+  mergeClips: (clipIds: string[]) => void
+  trimClip: (clipId: string, trimStart: number, trimEnd: number) => void
   addTrack: (track: TimelineTrack) => void
   updateTrack: (trackId: string, updates: Partial<TimelineTrack>) => void
   deleteTrack: (trackId: string) => void
@@ -339,6 +342,98 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     })
   }, [saveState])
 
+  const copyClip = useCallback((clipId: string, newStartTime?: number) => {
+    saveState()
+    setState(prev => {
+      if (!prev.currentProject) return prev
+      
+      const originalClip = prev.currentProject.clips.find(c => c.id === clipId)
+      if (!originalClip) return prev
+      
+      const copiedClip: TimelineClip = {
+        ...originalClip,
+        id: Date.now().toString(),
+        title: `${originalClip.title} (Copy)`,
+        startTime: newStartTime !== undefined ? newStartTime : originalClip.startTime + originalClip.duration
+      }
+      
+      return {
+        ...prev,
+        currentProject: {
+          ...prev.currentProject,
+          clips: [...prev.currentProject.clips, copiedClip],
+          updatedAt: new Date().toISOString()
+        },
+        selectedClipId: copiedClip.id
+      }
+    })
+  }, [saveState])
+
+  const mergeClips = useCallback((clipIds: string[]) => {
+    if (clipIds.length < 2) return
+    saveState()
+    setState(prev => {
+      if (!prev.currentProject) return prev
+      
+      const clipsToMerge = prev.currentProject.clips
+        .filter(c => clipIds.includes(c.id))
+        .sort((a, b) => a.startTime - b.startTime)
+      
+      if (clipsToMerge.length < 2) return prev
+      
+      const firstClip = clipsToMerge[0]
+      const lastClip = clipsToMerge[clipsToMerge.length - 1]
+      
+      const mergedClip: TimelineClip = {
+        ...firstClip,
+        id: Date.now().toString(),
+        duration: (lastClip.startTime + lastClip.duration) - firstClip.startTime,
+        title: `${firstClip.title} (Merged)`
+      }
+      
+      return {
+        ...prev,
+        currentProject: {
+          ...prev.currentProject,
+          clips: [
+            ...prev.currentProject.clips.filter(c => !clipIds.includes(c.id)),
+            mergedClip
+          ],
+          updatedAt: new Date().toISOString()
+        },
+        selectedClipId: mergedClip.id
+      }
+    })
+  }, [saveState])
+
+  const trimClip = useCallback((clipId: string, trimStart: number = 0, trimEnd: number = 0) => {
+    saveState()
+    setState(prev => {
+      if (!prev.currentProject) return prev
+      
+      const clip = prev.currentProject.clips.find(c => c.id === clipId)
+      if (!clip) return prev
+      
+      const newStartTime = clip.startTime + trimStart
+      const newDuration = clip.duration - trimStart - trimEnd
+      
+      if (newDuration <= 0) return prev
+      
+      return {
+        ...prev,
+        currentProject: {
+          ...prev.currentProject,
+          clips: prev.currentProject.clips.map(c =>
+            c.id === clipId
+              ? { ...c, startTime: newStartTime, duration: newDuration }
+              : c
+          ),
+          updatedAt: new Date().toISOString()
+        }
+      }
+    })
+  }, [saveState])
+
   const addTrack = useCallback((track: TimelineTrack) => {
     saveState()
     setState(prev => {
@@ -406,6 +501,9 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     updateClip,
     deleteClip,
     splitClip,
+    copyClip,
+    mergeClips,
+    trimClip,
     addTrack,
     updateTrack,
     deleteTrack,
