@@ -125,7 +125,7 @@ export default function MediaLibrary({ onSelectMedia, onAddToTimeline }: MediaLi
   }
 
   const deleteSelected = () => {
-    setMedia(prev => prev.filter(item => !selectedItems.includes(item.id))
+    setMedia(prev => prev.filter(item => !selectedItems.includes(item.id)))
     setSelectedItems([])
   }
 
