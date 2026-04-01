@@ -38,16 +38,20 @@ Whether you're a content creator, marketer, educator, or storyteller, Action emp
 - **Drag & Drop Interface**: Intuitive clip management with drag, drop, and reordering between tracks
 - **Precision Timeline**: Frame-accurate editing with zoom controls and time markers
 - **Track Management**: Lock, mute, and adjust volume for individual tracks
-- **Clip Operations**: Cut, trim, split, and merge clips with professional precision
+- **Clip Operations**: Cut, trim, split, merge, copy, and duplicate clips with professional precision
 - **Transition Library**: 10+ built-in transition effects including fade, dissolve, slide, wipe, and zoom
 - **Clip Selection**: Visual selection and property editing for individual clips
 - **Track Operations**: Add, remove, and manage multiple video, audio, and text tracks
-- **History System**: Comprehensive undo/redo functionality for all editing operations
+- **History System**: Comprehensive undo/redo functionality for all editing operations (up to 50 history states)
 - **Real-time Hover Preview**: Preview time indicator when hovering over timeline
 - **Advanced Clip Resizing**: Resize clips from both start and end points with visual feedback
-- **Smooth Zoom Controls**: Intuitive zoom controls with slider and button inputs
+- **Smooth Zoom Controls**: Intuitive zoom controls with slider and button inputs (0.25x - 4x)
 - **Track Icons**: Visual icons for each track type for easy identification
 - **Clip Gradient Colors**: Beautiful gradient colors for different clip types
+- **Keyboard Shortcuts**: Comprehensive keyboard shortcuts for all editing operations (Space for play/pause, Arrow keys for navigation, Ctrl+Z for undo, etc.)
+- **Clip Trimming**: Precise trimming from both start and end points
+- **Clip Reordering**: Flexible clip reordering within tracks
+- **Project Duplication**: Create complete copies of existing projects
 
 ### 🎨 Video Preview
 - **Real-Time Preview**: Instant visual feedback of your edits
@@ -106,6 +110,18 @@ Whether you're a content creator, marketer, educator, or storyteller, Action emp
 - **Comprehensive Skill Library**: Access pre-built skills for common video creation patterns with difficulty levels (Beginner, Intermediate, Advanced)
 - **Share & Collaborate**: Export and share your skills with the community
 
+### 📁 Media Library
+- **Unified Media Management**: Centralized storage for all your images, videos, and audio files
+- **Drag & Drop Upload**: Easy file upload with drag-and-drop support and file browsing
+- **Grid & List Views**: Switch between grid and list views for optimal media browsing
+- **Advanced Search**: Search media by title, tags, and file properties
+- **Type Filtering**: Filter media by image, video, or audio types
+- **Bulk Operations**: Select multiple items for batch operations and deletion
+- **File Metadata**: Display file size, duration, creation date, and custom tags
+- **Organized Tagging**: Flexible tagging system for media categorization
+- **Preview Actions**: Quick access to add to timeline, preview, or manage media
+- **Dark Theme Interface**: Beautiful dark theme with smooth animations and transitions
+
 ### 🎵 Advanced Audio Processing
 - **Intelligent Music Recommendations**: Based on mood, genre, and content analysis
 - **Voice Profile System**: Multiple voice options with tone and gender selection
@@ -114,11 +130,13 @@ Whether you're a content creator, marketer, educator, or storyteller, Action emp
 - **Audio Timing**: Precision audio timing and synchronization tools
 
 ### 💾 Advanced Project Management
+- **Local Storage Persistence**: Automatic project saving and loading using browser localStorage for instant access
 - **Project Persistence**: Save and load complete video projects with full timeline state
-- **Undo/Redo History**: Full edit history with unlimited undo/redo capabilities
+- **Undo/Redo History**: Full edit history with up to 50 history states
 - **Version Control**: Track changes and revert to previous versions
 - **Project Metadata**: Customizable project settings including resolution, frame rate, and aspect ratio
 - **Clip Properties**: Detailed clip metadata and property editing panel
+- **Automatic Saving**: Real-time project synchronization with localStorage
 
 ## 🏗️ Architecture
 
