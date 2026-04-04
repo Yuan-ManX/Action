@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useDragControls } from 'framer-motion'
 import { cn, generateId } from '@/lib'
 import { ChatMessage } from '@/types'
+import AudioWorkstation from './AudioWorkstation'
 
 interface AIAudioProps {
   onApplySuggestion?: (suggestion: any) => void
@@ -184,21 +185,28 @@ export default function AIAudio({ onApplySuggestion, onGenerateScript }: AIAudio
   // Resizable Panel Handler
   const handleResizeMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     setIsResizing(true)
 
+    const startX = e.clientX
+    const startWidth = chatWidth
+
     const handleMouseMove = (moveEvent: MouseEvent) => {
-      const newWidth = moveEvent.clientX
-      if (newWidth >= 300 && newWidth <= 600) {
-        setChatWidth(newWidth)
-      }
+      const deltaX = moveEvent.clientX - startX
+      const newWidth = Math.max(300, Math.min(600, startWidth + deltaX))
+      setChatWidth(newWidth)
     }
 
     const handleMouseUp = () => {
       setIsResizing(false)
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
     }
 
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
   }
@@ -397,293 +405,27 @@ export default function AIAudio({ onApplySuggestion, onGenerateScript }: AIAudio
       {/* Resizable Divider */}
       <div
         onMouseDown={handleResizeMouseDown}
-        className={`w-1.5 bg-oat-border hover:bg-ube-500 cursor-col-resize transition-colors flex-shrink-0 relative group ${isResizing ? 'bg-ube-500' : ''}`}
+        className={`w-2 bg-gradient-to-r from-ube-400 to-slashie-500 hover:from-ube-500 hover:to-lemon-500 cursor-col-resize transition-all duration-200 flex-shrink-0 relative group ${isResizing ? 'from-red-500 to-pink-500 scale-x-110' : 'hover:scale-x-105'}`}
+        style={{ zIndex: 50, height: '100%' }}
       >
-        <div className="absolute inset-y-0 -left-1 -right-1"></div>
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-8 rounded-full transition-colors ${isResizing ? 'bg-white' : 'bg-warm-silver group-hover:bg-ube-600'}`}></div>
+        <div className="absolute inset-y-0 -left-2 -right-2 bg-transparent"></div>
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-12 rounded-full transition-all duration-200 ${isResizing ? 'bg-white shadow-lg shadow-white/50 scale-125' : 'bg-white/70 group-hover:bg-white group-hover:shadow-md scale-110'}`}></div>
+        {isResizing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-800 text-white text-xs rounded shadow-lg whitespace-nowrap pointer-events-none"
+          >
+            {Math.round(chatWidth)}px
+          </motion.div>
+        )}
       </div>
 
-      {/* RIGHT PANEL - DAW Audio Editor */}
+      {/* RIGHT PANEL - Professional DAW Workstation (TuneFlow + Audacity + Tracktion Engine) */}
       <div className="flex-1 flex flex-col bg-[#1a1a2e]">
-        {/* Transport Bar */}
-        <div className="h-14 border-b border-[#2a2a3e] bg-[#16162a] flex items-center justify-between px-4">
-          {/* Left: Playback Controls */}
-          <div className="flex items-center gap-2">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setCurrentTime(Math.max(0, currentTime - 5))}
-              className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white rounded transition-colors"
-            >⏮</motion.button>
-            
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsPlaying(!isPlaying)}
-              className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-all",
-                isPlaying 
-                  ? "bg-red-500/20 text-red-400" 
-                  : "bg-slushie-500/20 text-slushie-400 hover:bg-slushie-500/30"
-              )}
-            >
-              {isPlaying ? '⏸' : '▶'}
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setCurrentTime(Math.min(duration, currentTime + 5))}
-              className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white rounded transition-colors"
-            >⏭</motion.button>
-
-            <div className="w-px h-6 bg-white/10 mx-2"></div>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => { setCurrentTime(0); setIsPlaying(false); }}
-              className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white rounded transition-colors"
-            >⏹</motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white rounded transition-colors"
-            >🔁</motion.button>
-          </div>
-
-          {/* Center: Time Display */}
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-mono text-slashie-400 tabular-nums">{formatTime(currentTime)}</span>
-            <span className="text-white/30">/</span>
-            <span className="text-sm font-mono text-white/50 tabular-nums">{formatTime(duration)}</span>
-            
-            <div className="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden ml-2">
-              <motion.div
-                className="h-full bg-gradient-to-r from-slushie-500 to-ube-500 rounded-full"
-                style={{ width: `${(currentTime / duration) * 100}%` }}
-              ></motion.div>
-            </div>
-          </div>
-
-          {/* Right: Zoom & Tools */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 bg-white/5 rounded px-2 py-1">
-              <button 
-                onClick={() => setZoomLevel(Math.max(0.25, zoomLevel - 0.25))}
-                className="text-white/60 hover:text-white text-xs w-5"
-              >−</button>
-              <span className="text-xs text-white/80 min-w-[3rem] text-center">{Math.round(zoomLevel * 100)}%</span>
-              <button 
-                onClick={() => setZoomLevel(Math.min(2, zoomLevel + 0.25))}
-                className="text-white/60 hover:text-white text-xs w-5"
-              >+</button>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <button className="p-1.5 text-white/50 hover:text-white rounded transition-colors text-xs">Snap</button>
-              <button className="p-1.5 text-white/50 hover:text-white rounded transition-colors text-xs">Grid</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Editor Area: Tracks + Timeline */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Track List (Left Sidebar) */}
-          <div className="w-48 border-r border-[#2a2a3e] bg-[#12121f] flex flex-col">
-            {/* Track Headers */}
-            <div className="h-8 border-b border-[#2a2a3e] flex items-end px-2 pb-1">
-              <div className="w-8"></div>
-              <div className="flex-1 text-xs text-white/40 pl-2">Name</div>
-              <div className="w-10 text-center text-xs text-white/40">M</div>
-              <div className="w-10 text-center text-xs text-white/40">S</div>
-            </div>
-
-            {/* Tracks */}
-            <div className="flex-1 overflow-y-auto scrollbar-thin">
-              {tracks.map((track, idx) => (
-                <motion.div
-                  key={track.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  onClick={() => setSelectedTrack(selectedTrack === track.id ? null : track.id)}
-                  className={cn(
-                    "h-12 flex items-center gap-2 px-2 cursor-pointer border-b border-[#1e1e32] transition-all group",
-                    selectedTrack === track.id && "bg-white/[0.06]",
-                    track.muted && "opacity-50"
-                  )}
-                >
-                  {/* Track Color Indicator */}
-                  <div 
-                    className="w-2 h-8 rounded-sm flex-shrink-0"
-                    style={{ backgroundColor: track.color }}
-                  ></div>
-
-                  {/* Track Name */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-white/80 truncate font-medium group-hover:text-white transition-colors">
-                      {track.name}
-                    </p>
-                  </div>
-
-                  {/* Mute Button */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); toggleMute(track.id); }}
-                    className={cn(
-                      "w-8 h-6 rounded flex items-center justify-center text-xs font-bold transition-all",
-                      track.muted 
-                        ? "bg-white/10 text-white/40" 
-                        : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                    )}
-                  >M</button>
-
-                  {/* Solo Button */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); toggleSolo(track.id); }}
-                    className={cn(
-                      "w-8 h-6 rounded flex items-center justify-center text-xs font-bold transition-all",
-                      track.solo 
-                        ? "bg-lemon-500/30 text-lemon-400" 
-                        : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                    )}
-                  >S</button>
-                </motion.div>
-              ))}
-
-              {/* Add Track Button */}
-              <button className="h-10 flex items-center justify-center gap-2 text-white/40 hover:text-slushie-400 text-xs border-b border-dashed border-[#2a2a3e] hover:border-slashie-500/50 transition-all">
-                <span>+</span> Add Track
-              </button>
-            </div>
-          </div>
-
-          {/* Timeline / Waveform Area */}
-          <div className="flex-1 flex flex-col overflow-hidden bg-[#0d0d1a]">
-            {/* Time Ruler */}
-            <div className="h-6 border-b border-[#2a2a3e] bg-[#12121f] relative">
-              <div 
-                className="absolute inset-0 flex"
-                style={{ transform: `scaleX(${zoomLevel})`, transformOrigin: 'left center' }}
-              >
-                {[...Array(Math.ceil(duration / 5) + 1)].map((_, i) => (
-                  <div key={i} className="flex-shrink-0 w-[200px] relative h-full">
-                    <span className="absolute top-0 left-0 text-[10px] text-white/30 font-mono">{formatTime(i * 5)}</span>
-                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></div>
-                    {[...Array(4)].map((_, j) => (
-                      <div key={j} className="absolute bottom-0 left-0 right-0 h-[0.5px] bg-white/5" style={{ left: `${(j + 1) * 25}%` }}></div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              {/* Playhead */}
-              <motion.div
-                animate={{ x: `${(currentTime / duration) * 100 * zoomLevel}%` }}
-                className="absolute top-0 bottom-0 w-0.5 bg-lemon-500 z-10 pointer-events-none"
-                style={{ left: 0 }}
-              >
-                <div className="absolute -top-0 left-[-3px] w-0 h-2 bg-lemon-500"></div>
-                <div className="absolute -top-1 left-[-5px] w-2.5 h-3 bg-lemon-500 rounded-t-sm"></div>
-              </motion.div>
-            </div>
-
-            {/* Tracks Timeline */}
-            <div className="flex-1 overflow-auto relative">
-              <div 
-                className="absolute inset-0"
-                style={{ transform: `scaleX(${zoomLevel})`, transformOrigin: 'left center' }}
-              >
-                {tracks.map((track) => (
-                  <div
-                    key={track.id}
-                    className="h-12 relative border-b border-[#1a1a2e]"
-                  >
-                    {/* Clips on this track */}
-                    {track.clips.map((clip) => (
-                      <motion.div
-                        key={clip.id}
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        onClick={() => selectClip(clip.id)}
-                        whileHover={{ scale: 1.02 }}
-                        className={cn(
-                          "absolute top-1 bottom-1 rounded-md cursor-pointer transition-all",
-                          clip.selected 
-                            ? "ring-2 ring-white shadow-lg z-10" 
-                            : "hover:ring-1 hover:ring-white/30"
-                        )}
-                        style={{
-                          left: `${(clip.start / duration) * 100}%`,
-                          width: `${(clip.duration / duration) * 100}%`,
-                          backgroundColor: clip.color + (clip.selected ? '' : 'CC'),
-                          backgroundImage: `repeating-linear-gradient(
-                            90deg,
-                            ${clip.color},
-                            ${clip.color} 4px,
-                            ${clip.color}88 4px,
-                            ${clip.color}88 8px
-                          )`
-                        }}
-                      >
-                        {/* Clip Label */}
-                        <div className="absolute inset-x-1 top-1/2 -translate-y-1/2 flex items-center">
-                          <span className="text-[10px] text-white font-medium truncate drop-shadow-md">
-                            {clip.name}
-                          </span>
-                        </div>
-
-                        {/* Waveform visualization pattern */}
-                        <div className="absolute inset-0 opacity-30">
-                          {[...Array(20)].map((_, i) => (
-                            <div
-                              key={i}
-                              className="absolute bottom-1/2 w-px bg-current translate-y-1/2"
-                              style={{
-                                left: `${i * 5}%`,
-                                height: `${30 + Math.sin(i * 0.5) * 25}%`,
-                                opacity: 0.4 + Math.abs(Math.cos(i * 0.3)) * 0.6
-                              }}
-                            ></div>
-                          ))}
-                        </div>
-
-                        {/* Clip handles for resizing */}
-                        {clip.selected && (
-                          <>
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-white/80 cursor-ew-resize rounded-l"></div>
-                            <div className="absolute right-0 top-0 bottom-0 w-1 bg-white/80 cursor-ew-resize rounded-r"></div>
-                          </>
-                        )}
-                      </motion.div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              {/* Selection Marquee overlay would go here */}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Status Bar */}
-        <div className="h-8 border-t border-[#2a2a3e] bg-[#12121f] flex items-center justify-between px-4 text-xs text-white/40">
-          <div className="flex items-center gap-4">
-            <span>Tracks: {tracks.length}</span>
-            <span>•</span>
-            <span>{tracks.reduce((acc, t) => acc + t.clips.length, 0)} clips</span>
-            <span>•</span>
-            <span>Sample Rate: 44.1kHz</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span>BPM: 120</span>
-            <span>•</span>
-            <span>Key: C Major</span>
-            <span>•</span>
-            <span>{isPlaying ? '▶ Playing' : '⏸ Stopped'}</span>
-          </div>
-        </div>
+        <AudioWorkstation onAudioGenerated={(data) => {
+          console.log('Audio generated:', data)
+        }} />
       </div>
     </div>
   )
