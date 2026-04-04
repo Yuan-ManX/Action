@@ -155,7 +155,7 @@ export default function AIStudio({ onApplySuggestion, onGenerateScript }: AIStud
             style={{ maxWidth: isChatCollapsed ? 0 : chatWidth }}
           >
             {/* Chat Header - Unified with Canva/Audio style */}
-            <div className="p-5 border-b border-oat-border bg-gradient-to-r from-lemon-500/10 via-slushie-500/10 to-transparent">
+            <div className="p-5 border-b border-oat-border bg-gradient-to-r from-lemon-500/10 via-slushie-500/10 to-transparent flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <motion.div
                   whileHover={{ rotateZ: -8, scale: 1.05 }}
@@ -174,6 +174,17 @@ export default function AIStudio({ onApplySuggestion, onGenerateScript }: AIStud
                   <p className="text-caption text-warm-silver">Video creation assistant</p>
                 </div>
               </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleChat}
+                className="p-2 hover:bg-oat-light rounded-lg transition-colors"
+                title="Collapse chat"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </motion.button>
             </div>
 
             {/* Quick Suggestions - Unified Style */}
@@ -326,15 +337,15 @@ export default function AIStudio({ onApplySuggestion, onGenerateScript }: AIStud
         {/* Toggle Chat Button (when collapsed) */}
         {isChatCollapsed && (
           <motion.button
-            initial={{ opacity: 0, x: -10 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             onClick={toggleChat}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-3 bg-gradient-to-r from-lemon-500 to-slushie-500 text-pure-white rounded-r-feature shadow-hard hover:shadow-lg transition-all clay-focus"
+            className="m-2 p-3 bg-gradient-to-r from-lemon-500 to-slushie-500 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
             title="Open AI Chat"
           >
-            🤖
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
           </motion.button>
         )}
 
