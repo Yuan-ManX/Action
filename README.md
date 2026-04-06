@@ -377,8 +377,3 @@ If you like this project, please ⭐ star the repo. Your support helps us grow!
 </p>
 
 
-<div align="center">
-
-**Made with ❤️ by the Action Team**
-
-</div>
