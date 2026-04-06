@@ -378,9 +378,3 @@ Action根据 MIT 许可。有关详细信息，请参阅[LICENSE](LICENSE)文件
   </a>
 </p>
 
-
-<div align="center">
-
-**Action团队用心打造 ❤️**
-
-</div>
