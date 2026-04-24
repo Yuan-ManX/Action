@@ -4,7 +4,7 @@
 
 # Action! 🎬 🎮
 
-### The AI-Native Agentic Creation Platform. 
+### AI-Native Agentic Creation Platform. 
 ### From Ideas to Interactive Stories. 
 
 <p align="center">
