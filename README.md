@@ -173,34 +173,8 @@ Whether you're a content creator, marketer, educator, or storyteller, Action emp
 - **Clip Properties**: Detailed clip metadata and property editing panel
 - **Automatic Saving**: Real-time project synchronization with localStorage
 
-## 🏗️ Architecture
-
-Action is built on a cohesive, modular architecture designed for scalability and extensibility:
-
-### Core Components
-- **Backend API**: Python/FastAPI service powering agent orchestration, video processing, and enhanced media capabilities
-- **Frontend Dashboard**: Next.js/React application providing intuitive user interface
-- **Agent Runtime**: Enhanced isolated execution environments for secure agent operations with security context
-- **Data Layer**: PostgreSQL + Supabase ready for persistent storage and real-time updates
-- **Speech Processing System**: Whisper-based ASR with speech cleaning and rough cut generation
-- **Enhanced Media Library**: Advanced media asset management with intelligent indexing
-
-### Technology Stack
-- **Backend**: Python 3.8+, FastAPI, LiteLLM
-- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
-- **Video Processing**: FFmpeg, MoviePy
-- **Speech Recognition**: OpenAI Whisper
-- **Web Tools**: Playwright, BeautifulSoup4, DuckDuckGo Search
-- **Containerization**: Docker, Docker Compose
-- **Database**: PostgreSQL, Supabase (ready)
 
 ## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8 or higher
-- Node.js 18 or higher
-- FFmpeg (for video processing)
-- API keys for your preferred LLM provider(s) (OpenAI, Anthropic, etc.)
 
 ### Installation
 
