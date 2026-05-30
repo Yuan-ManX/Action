@@ -173,34 +173,8 @@ Action!配备了智能的通用型AI工作者，可以处理研究、数据分�
 - **剪辑属性**：详细的剪辑元数据和属性编辑面板
 - **自动保存**：与localStorage实时同步项目状态
 
-## 🏗️ 架构
-
-Action构建在一个为可扩展性和可扩展性设计的内聚模块化架构之上：
-
-### 核心组件
-- **后端API**：为Agent编排、视频处理和增强媒体功能提供动力的Python/FastAPI服务
-- **前端仪表板**：提供直观用户界面的Next.js/React应用程序
-- **Agent运行时**：增强的隔离执行环境，用于安全的Agent操作，带有安全上下文
-- **数据层**：PostgreSQL + Supabase，准备好用于持久存储和实时更新
-- **语音处理系统**：基于Whisper的ASR，带有语音清理和粗切生成
-- **增强媒体库**：带有智能索引的高级媒体资产管理
-
-### 技术栈
-- **后端**：Python 3.8+、FastAPI、LiteLLM
-- **前端**：Next.js 14、React、TypeScript、Tailwind CSS
-- **视频处理**：FFmpeg、MoviePy
-- **语音识别**：OpenAI Whisper
-- **网络工具**：Playwright、BeautifulSoup4、DuckDuckGo搜索
-- **容器化**：Docker、Docker Compose
-- **数据库**：PostgreSQL、Supabase（已就绪）
 
 ## 🚀 快速开始
-
-### 前置要求
-- Python 3.8或更高版本
-- Node.js 18或更高版本
-- FFmpeg（用于视频处理）
-- 您首选LLM提供商的API密钥（OpenAI、Anthropic等）
 
 ### 安装
 
@@ -240,14 +214,6 @@ playwright install
 cd ..
 python start.py
 ```
-
-这将自动启动：
-- 后端API在http://localhost:8000
-- API文档在http://localhost:8000/docs
-- 前端仪表板在http://localhost:3000
-
-7. **访问仪表板**
-打开浏览器并导航到`http://localhost:3000`
 
 ## 📖 使用指南
 
