@@ -287,42 +287,6 @@ Action的AI Agent可以帮助完成各种任务：
 7. **撤销/重做**：使用键盘快捷键（Ctrl+Z/Ctrl+Shift+Z）撤销或重做更改
 8. **保存和导出**：保存您的项目并在准备好时导出
 
-## 🧪 测试
-
-Action包括用于后端和前端组件的全面测试套件：
-
-### 后端测试
-```bash
-cd backend
-source venv/bin/activate
-python -m pytest tests/ -v
-```
-
-### 运行单个测试脚本
-```bash
-# 测试对话式编辑系统
-python test_conversational_editing.py
-
-# 测试技能系统
-python test_skill_system.py
-
-# 测试Agent系统
-python test_agent_system.py
-
-# 测试语音处理
-python test_speech_processing.py
-```
-
-## 🎯 用例
-
-- **内容创作者**：大规模制作引人入胜的社交媒体内容
-- **营销人员**：创建引人注目的产品演示和促销视频
-- **教育工作者**：将课程转化为互动教育内容
-- **故事讲述者**：通过AI驱动的旁白和视觉效果让您的故事栩栩如生
-- **企业**：自动化用于培训、入职和沟通的视频制作
-- **研究人员**：进行全面的网络研究和分析
-- **播客和Vlogger**：自动生成转录并清理语音素材
-- **视频编辑器**：通过AI辅助的粗切和基于技能的编辑加速工作流
 
 ## 🤝 贡献
 
