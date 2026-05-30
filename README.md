@@ -287,42 +287,6 @@ Action's AI agent can help with various tasks:
 7. **Undo/Redo**: Use keyboard shortcuts (Ctrl+Z/Ctrl+Shift+Z) to undo or redo changes
 8. **Save & Export**: Save your project and export when ready
 
-## 🧪 Testing
-
-Action includes comprehensive test suites for both backend and frontend components:
-
-### Backend Tests
-```bash
-cd backend
-source venv/bin/activate
-python -m pytest tests/ -v
-```
-
-### Running Individual Test Scripts
-```bash
-# Test conversational editing system
-python test_conversational_editing.py
-
-# Test skill system
-python test_skill_system.py
-
-# Test agent system
-python test_agent_system.py
-
-# Test speech processing
-python test_speech_processing.py
-```
-
-## 🎯 Use Cases
-
-- **Content Creators**: Produce engaging social media content at scale
-- **Marketers**: Create compelling product demos and promotional videos
-- **Educators**: Transform lessons into interactive educational content
-- **Storytellers**: Bring your stories to life with AI-powered narration and visuals
-- **Businesses**: Automate video production for training, onboarding, and communication
-- **Researchers**: Conduct comprehensive web research and analysis
-- **Podcasters & Vloggers**: Auto-generate transcripts and clean up speech footage
-- **Video Editors**: Speed up workflow with AI-assisted rough cuts and skill-based editing
 
 ## 🤝 Contributing
 
