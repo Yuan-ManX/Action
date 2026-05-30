@@ -241,14 +241,6 @@ cd ..
 python start.py
 ```
 
-This will automatically start:
-- Backend API on http://localhost:8000
-- API Documentation on http://localhost:8000/docs
-- Frontend Dashboard on http://localhost:3000
-
-7. **Access the Dashboard**
-Open your browser and navigate to `http://localhost:3000`
-
 ## 📖 Usage Guide
 
 ### Creating Your First Video
