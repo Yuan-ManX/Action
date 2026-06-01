@@ -267,26 +267,6 @@ Action's AI agent can help with various tasks:
 "Apply the 'Social Media Optimized' skill to this video for TikTok."
 ```
 
-### Exploring the Dashboard
-
-- **Editor**: Professional timeline editor with multi-track support for precise video editing
-- **Chat**: Main interface for creating and editing videos through conversation
-- **Skills**: Browse and use pre-built video creation skills, or create your own
-- **History**: View and manage your previously created videos
-- **Media Library**: Enhanced media asset management with search and tagging
-- **Settings**: Configure your profile, API keys, and preferences
-
-### Using the Professional Timeline Editor
-
-1. **Open the Editor**: Navigate to the Editor page from the sidebar
-2. **Add Clips**: Click "Add Clip" to import media or use the drag-and-drop interface
-3. **Arrange Clips**: Drag clips along the timeline or between tracks
-4. **Edit Clips**: Select a clip to view and edit its properties in the sidebar
-5. **Add Transitions**: Use the transitions library to add smooth effects between clips
-6. **Split & Trim**: Use the split tool to divide clips at specific times
-7. **Undo/Redo**: Use keyboard shortcuts (Ctrl+Z/Ctrl+Shift+Z) to undo or redo changes
-8. **Save & Export**: Save your project and export when ready
-
 
 ## 🤝 Contributing
 
